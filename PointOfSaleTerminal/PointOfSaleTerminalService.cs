@@ -32,15 +32,11 @@ namespace PointOfSaleTerminal
             return _priceList[itemCode].Price;
         }
 
-        private void ApplyRebate(Doughnut item, ref double itemSum)
+        private void ApplyRebate(Doughnut item)
         {
             if (_rebateProvider != null)
             {
                 item.Rebate = _rebateProvider.FindRebate(item);
-                if (item.Rebate != null && item.Rebate.Type == RebateType.Absolute)
-                {
-                    itemSum -= item.Rebate.RebateAmount;
-                }
             }
         }
 
@@ -78,7 +74,11 @@ namespace PointOfSaleTerminal
             foreach (var item in _items.Values)
             {
                 var itemSum = item.Quantity * item.Price;
-                ApplyRebate(item, ref itemSum);
+                ApplyRebate(item);
+                if (item.Rebate != null && item.Rebate.Type == RebateType.Absolute)
+                {
+                    itemSum -= item.Rebate.RebateAmount;
+                }
                 total += itemSum;
             }
             return total;
