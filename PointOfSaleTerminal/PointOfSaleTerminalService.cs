@@ -61,12 +61,12 @@ namespace PointOfSaleTerminal
             _priceList.Add(itemCode, new ItemPrice { ItemName = itemCode, Price = price });
         }
 
-        public void SetPricing()
+        public void SetPricing(Dictionary<string, double> priceList)
         {
-            _priceList.Add("DoughnutA", new ItemPrice { ItemName = "DoughnutA", Price = 1.25 });
-            _priceList.Add("DoughnutB", new ItemPrice { ItemName = "DoughnutB", Price = 4.25 });
-            _priceList.Add("DoughnutC", new ItemPrice { ItemName = "DoughnutC", Price = 1.00 });
-            _priceList.Add("DoughnutD", new ItemPrice { ItemName = "DoughnutD", Price = 0.75 });
+            foreach (var price in priceList)
+            {
+                _priceList.Add(price.Key, new ItemPrice { ItemName = price.Key, Price = price.Value });
+            }
         }
         public double CalculateTotal()
         {

@@ -16,8 +16,8 @@ namespace PointOfSaleTerminal
         public VolumeRebateProvider()
         {
             _rebateRules = new Dictionary<string, VolumeRebateRule> {
-                { "DoughnutA", new VolumeRebateRule {ItemName = "DoughnutA", RebateQuatity = 3, Numerator = 1, Denominator = 5 }},
-                { "DoughnutC", new VolumeRebateRule {ItemName = "DoughnutC", RebateQuatity = 6, Numerator = 1, Denominator = 6 }}
+                { "A", new VolumeRebateRule {ItemName = "A", RebateQuatity = 3, Numerator = 1, Denominator = 5 }},
+                { "C", new VolumeRebateRule {ItemName = "C", RebateQuatity = 6, Numerator = 1, Denominator = 6 }}
             };
         }
         public ItemRebate FindRebate(ItemBase item)

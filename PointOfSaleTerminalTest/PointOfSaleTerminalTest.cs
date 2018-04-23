@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xunit;
 using PointOfSaleTerminal.Interfaces;
 using PointOfSaleTerminal;
@@ -8,20 +9,32 @@ namespace PointOfSaleTerminalTest
     public class PointOfSaleTerminalTest
     {
         IPointOfSaleTerminal _terminal;
+        private Dictionary<string, double> _priceList;
+
+        public PointOfSaleTerminalTest()
+        {
+            _priceList = new Dictionary<string, double>
+            {
+                {"A", 1.25},
+                {"B", 4.25},
+                {"C", 1.00},
+                {"D", 0.75}
+            };
+        }
 
         [Fact]
         public void CalculateTotal_whenABCDABA_returns_13_25()
         {
             var _terminal = new PointOfSaleTerminalService();
 
-            _terminal.SetPricing();
-            _terminal.ScanItem("DoughnutA");
-            _terminal.ScanItem("DoughnutB");
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutD");
-            _terminal.ScanItem("DoughnutA");
-            _terminal.ScanItem("DoughnutB");
-            _terminal.ScanItem("DoughnutA");
+            _terminal.SetPricing(_priceList);
+            _terminal.ScanItem("A");
+            _terminal.ScanItem("B");
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("D");
+            _terminal.ScanItem("A");
+            _terminal.ScanItem("B");
+            _terminal.ScanItem("A");
 
             Assert.Equal(13.25, _terminal.CalculateTotal());
 
@@ -32,14 +45,14 @@ namespace PointOfSaleTerminalTest
         {
             var _terminal = new PointOfSaleTerminalService();
 
-            _terminal.SetPricing();
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutC");
+            _terminal.SetPricing(_priceList);
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("C");
 
             Assert.Equal(6.00, _terminal.CalculateTotal());
 
@@ -50,11 +63,11 @@ namespace PointOfSaleTerminalTest
         {
             var _terminal = new PointOfSaleTerminalService();
 
-            _terminal.SetPricing();
-            _terminal.ScanItem("DoughnutA");
-            _terminal.ScanItem("DoughnutB");
-            _terminal.ScanItem("DoughnutC");
-            _terminal.ScanItem("DoughnutD");
+            _terminal.SetPricing(_priceList);
+            _terminal.ScanItem("A");
+            _terminal.ScanItem("B");
+            _terminal.ScanItem("C");
+            _terminal.ScanItem("D");
 
             Assert.Equal(7.25, _terminal.CalculateTotal());
 

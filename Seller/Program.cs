@@ -12,7 +12,13 @@ namespace Seller
         static void Main(string[] args)
         {
             PointOfSaleTerminalService posService = new PointOfSaleTerminalService();
-            posService.SetPricing();
+            posService.SetPricing(new Dictionary<string, double>
+            {
+                {"A", 1.25},
+                {"B", 4.25},
+                {"C", 1.00},
+                {"D", 0.75}
+            });
             var waitIteminsert = true;
 
             while (waitIteminsert)
