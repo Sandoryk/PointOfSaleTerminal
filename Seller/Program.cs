@@ -58,13 +58,13 @@ namespace Seller
                     }
                 }
             }
-            //posService.ScanItem("DoughnutC");
-            //posService.ScanItem("DoughnutC");
-            //posService.ScanItem("DoughnutC");
-            //posService.ScanItem("DoughnutC");
-            //posService.ScanItem("DoughnutC");
-            //posService.ScanItem("DoughnutC");
-            //posService.ScanItem("DoughnutC");
+            //posService.ScanItem("C");
+            //posService.ScanItem("C");
+            //posService.ScanItem("C");
+            //posService.ScanItem("C");
+            //posService.ScanItem("C");
+            //posService.ScanItem("C");
+            //posService.ScanItem("C");
 
             double total = posService.CalculateTotal();
 
