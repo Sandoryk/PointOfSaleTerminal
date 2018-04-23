@@ -15,7 +15,6 @@ namespace PointOfSaleTerminalTest
             var _terminal = new PointOfSaleTerminalService();
 
             _terminal.SetPricing();
-            _terminal.SetRebate();
             _terminal.ScanItem("DoughnutA");
             _terminal.ScanItem("DoughnutB");
             _terminal.ScanItem("DoughnutC");
@@ -34,7 +33,6 @@ namespace PointOfSaleTerminalTest
             var _terminal = new PointOfSaleTerminalService();
 
             _terminal.SetPricing();
-            _terminal.SetRebate();
             _terminal.ScanItem("DoughnutC");
             _terminal.ScanItem("DoughnutC");
             _terminal.ScanItem("DoughnutC");
@@ -53,7 +51,6 @@ namespace PointOfSaleTerminalTest
             var _terminal = new PointOfSaleTerminalService();
 
             _terminal.SetPricing();
-            _terminal.SetRebate();
             _terminal.ScanItem("DoughnutA");
             _terminal.ScanItem("DoughnutB");
             _terminal.ScanItem("DoughnutC");

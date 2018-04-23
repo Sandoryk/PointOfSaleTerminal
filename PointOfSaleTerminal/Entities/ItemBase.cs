@@ -8,7 +8,7 @@ namespace PointOfSaleTerminal
 {
     public abstract class ItemBase
     {
-        public string Name { get; set; }
+        public string Code { get; set; }
         public double Quantity { get; set; }
         public double Price { get; set; }
     }

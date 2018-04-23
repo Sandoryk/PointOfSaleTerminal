@@ -11,20 +11,26 @@ namespace PointOfSaleTerminal
 {
     public class VolumeRebateProvider : IRebate
     {
-        readonly List<VolumeRebateRule>  _rebateRules;
+        readonly Dictionary<string, VolumeRebateRule>  _rebateRules;
 
         public VolumeRebateProvider()
         {
-            _rebateRules = new List<VolumeRebateRule> {
-                new VolumeRebateRule {ItemName = "DoughnutA", RebateQuatity = 3, Numerator = 1, Denominator = 5 },
-                new VolumeRebateRule {ItemName = "DoughnutC", RebateQuatity = 6, Numerator = 1, Denominator = 6 },
+            _rebateRules = new Dictionary<string, VolumeRebateRule> {
+                { "DoughnutA", new VolumeRebateRule {ItemName = "DoughnutA", RebateQuatity = 3, Numerator = 1, Denominator = 5 }},
+                { "DoughnutC", new VolumeRebateRule {ItemName = "DoughnutC", RebateQuatity = 6, Numerator = 1, Denominator = 6 }}
             };
         }
         public ItemRebate FindRebate(ItemBase item)
         {
-            var foundRule = _rebateRules.Find(rule => rule.ItemName == item.Name && item.Quantity >= rule.RebateQuatity);
-            if (foundRule == null)
+            if (!_rebateRules.ContainsKey(item.Code))
+            {
                 return null;
+            }
+            var foundRule = _rebateRules[item.Code];
+            if (item.Quantity < foundRule.RebateQuatity)
+            {
+                return null;
+            }
             return new ItemRebate
             {
                 Type = RebateType.Absolute,
