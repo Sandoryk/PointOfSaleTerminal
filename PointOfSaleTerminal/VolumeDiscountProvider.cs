@@ -10,13 +10,13 @@ namespace PointOfSaleTerminal
 {
     public class VolumeDiscountProvider : IDiscount
     {
-        readonly Dictionary<string, VolumeDiscountRule>  _rebateRules;
+        readonly Dictionary<string, Discount>  _rebateRules;
 
         public VolumeDiscountProvider()
         {
-            _rebateRules = new Dictionary<string, VolumeDiscountRule> {
-                { "A", new VolumeDiscountRule {ItemName = "A", RebateQuatity = 3, DiscountAmount = 0.75 }},
-                { "C", new VolumeDiscountRule {ItemName = "C", RebateQuatity = 6, DiscountAmount = 1 }}
+            _rebateRules = new Dictionary<string, Discount> {
+                { "A", new Discount {ItemName = "A", DiscountQuatity = 3, DiscountAmount = 0.75 }},
+                { "C", new Discount {ItemName = "C", DiscountQuatity = 6, DiscountAmount = 1 }}
             };
         }
         public double FindDiscount(Item item)
@@ -26,7 +26,7 @@ namespace PointOfSaleTerminal
                 return 0;
             }
             var foundRule = _rebateRules[item.Code];
-            if (item.Quantity < foundRule.RebateQuatity)
+            if (item.Quantity < foundRule.DiscountQuatity)
             {
                 return 0;
             }
