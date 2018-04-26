@@ -6,21 +6,20 @@ using System.Text;
 using System.Threading.Tasks;
 using PointOfSaleTerminal.Interfaces;
 using PointOfSaleTerminal.Entities;
-using PointOfSaleTerminal.Enums;
 
 namespace PointOfSaleTerminal
 {
     public class PointOfSaleTerminalService : IPointOfSaleTerminal
     {
-        readonly Dictionary<string, Doughnut> _items;
+        readonly Dictionary<string, Item> _items;
         readonly Dictionary<string, ItemPrice> _priceList;
-        readonly IRebate _rebateProvider;
+        readonly IDiscount _discountProvider;
 
         public PointOfSaleTerminalService()
         {
-            _items = new Dictionary<string, Doughnut>();
+            _items = new Dictionary<string, Item>();
             _priceList = new Dictionary<string, ItemPrice>();
-            _rebateProvider = new VolumeRebateProvider();
+            _discountProvider = new VolumeDiscountProvider();
         }
 
         private double GetItemPrice(string itemCode)
@@ -32,12 +31,9 @@ namespace PointOfSaleTerminal
             return _priceList[itemCode].Price;
         }
 
-        private void ApplyRebate(Doughnut item)
+        private double GetRebate(Item item)
         {
-            if (_rebateProvider != null)
-            {
-                item.Rebate = _rebateProvider.FindRebate(item);
-            }
+            return _discountProvider?.FindDiscount(item) ?? 0;
         }
 
         public void ScanItem(string itemCode)
@@ -45,13 +41,12 @@ namespace PointOfSaleTerminal
             if (_items.ContainsKey(itemCode)) {
                 var itemAlreadyInList = _items[itemCode];
                 itemAlreadyInList.Quantity += 1;
+                return;
             }
-            else {
-                _items[itemCode] = new Doughnut { Code = itemCode, Quantity = 1, Price = GetItemPrice(itemCode) };
-            }
+            _items[itemCode] = new Item { Code = itemCode, Quantity = 1, Price = GetItemPrice(itemCode) };
         }
 
-        public bool IsItemExists(string itemCode)
+        public bool IsItemPriceExists(string itemCode)
         {
             return _priceList.ContainsKey(itemCode);
         }
@@ -73,13 +68,7 @@ namespace PointOfSaleTerminal
             double total = 0;
             foreach (var item in _items.Values)
             {
-                var itemSum = item.Quantity * item.Price;
-                ApplyRebate(item);
-                if (item.Rebate != null && item.Rebate.Type == RebateType.Absolute)
-                {
-                    itemSum -= item.Rebate.RebateAmount;
-                }
-                total += itemSum;
+                total += item.Quantity * item.Price - GetRebate(item);
             }
             return total;
         }

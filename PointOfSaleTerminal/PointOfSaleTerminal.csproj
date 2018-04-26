@@ -40,17 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Doughnut.cs" />
     <Compile Include="Entities\ItemPrice.cs" />
-    <Compile Include="Enums\Enums.cs" />
     <Compile Include="Interfaces\IPointOfSaleTerminal.cs" />
-    <Compile Include="Interfaces\IRebate.cs" />
-    <Compile Include="Entities\ItemBase.cs" />
-    <Compile Include="Entities\ItemRebate.cs" />
+    <Compile Include="Interfaces\IDiscount.cs" />
+    <Compile Include="Entities\Item.cs" />
     <Compile Include="PointOfSaleTerminalService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\VolumeRebateRule.cs" />
-    <Compile Include="VolumeRebateProvider.cs" />
+    <Compile Include="Entities\VolumeDiscountRule.cs" />
+    <Compile Include="VolumeDiscountProvider.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

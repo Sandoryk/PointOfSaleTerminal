@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace PointOfSaleTerminal.Entities
 {
-    public class VolumeRebateRule
+    public class VolumeDiscountRule
     {
         public string ItemName { get; set; }
         public double RebateQuatity { get; set; }
-        public int Numerator { get; set; }
-        public int Denominator { get; set; }
+        public double DiscountAmount { get; set; }
     }
 }
