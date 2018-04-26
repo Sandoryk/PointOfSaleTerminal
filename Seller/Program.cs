@@ -33,8 +33,8 @@ namespace Seller
                     }
                     if (waitIteminsert)
                     {
-                        var isItemExists = posService.IsItemExists(item);
-                        if (!isItemExists)
+                        var isItemPriceExists = posService.IsItemPriceExists(item);
+                        if (!isItemPriceExists)
                         {
                             Console.WriteLine($"Item code '{item}' does not exist. It will be created. Enter price for '{item}'");
                             var price = Console.ReadLine();

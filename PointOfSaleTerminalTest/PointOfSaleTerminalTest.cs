@@ -9,7 +9,7 @@ namespace PointOfSaleTerminalTest
     public class PointOfSaleTerminalTest
     {
         IPointOfSaleTerminal _terminal;
-        private Dictionary<string, double> _priceList;
+        private readonly Dictionary<string, double> _priceList;
 
         public PointOfSaleTerminalTest()
         {
@@ -25,7 +25,7 @@ namespace PointOfSaleTerminalTest
         [Fact]
         public void CalculateTotal_whenABCDABA_returns_13_25()
         {
-            var _terminal = new PointOfSaleTerminalService();
+            _terminal = new PointOfSaleTerminalService();
 
             _terminal.SetPricing(_priceList);
             _terminal.ScanItem("A");
@@ -43,7 +43,7 @@ namespace PointOfSaleTerminalTest
         [Fact]
         public void CalculateTotal_whenCCCCCCC_returns_6_00()
         {
-            var _terminal = new PointOfSaleTerminalService();
+            _terminal = new PointOfSaleTerminalService();
 
             _terminal.SetPricing(_priceList);
             _terminal.ScanItem("C");
@@ -61,7 +61,7 @@ namespace PointOfSaleTerminalTest
         [Fact]
         public void CalculateTotal_whenABCD_returns_7_25()
         {
-            var _terminal = new PointOfSaleTerminalService();
+            _terminal = new PointOfSaleTerminalService();
 
             _terminal.SetPricing(_priceList);
             _terminal.ScanItem("A");

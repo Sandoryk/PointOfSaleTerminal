@@ -7,8 +7,8 @@ using PointOfSaleTerminal.Entities;
 
 namespace PointOfSaleTerminal.Interfaces
 {
-    public interface IRebate
+    public interface IDiscount
     {
-        ItemRebate FindRebate(ItemBase item);
+        double FindDiscount(Item item);
     }
 }
