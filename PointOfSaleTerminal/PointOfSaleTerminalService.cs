@@ -12,64 +12,73 @@ namespace PointOfSaleTerminal
 {
     public class PointOfSaleTerminalService : IPointOfSaleTerminal
     {
-        readonly List<Doughnut> _items;
-        readonly List<ItemPrice> _priceList;
-        IRebate _rebateProvider;
+        readonly Dictionary<string, Doughnut> _items;
+        readonly Dictionary<string, ItemPrice> _priceList;
+        readonly IRebate _rebateProvider;
 
         public PointOfSaleTerminalService()
         {
-            _items = new List<Doughnut>();
-            _priceList = new List<ItemPrice>();
-        }
-
-        public void ScanItem(string itemName, double itemQuantity = 1)
-        {
-            var itemAlreadyInList = _items.Find(listItem => listItem.Name == itemName);
-            if (itemAlreadyInList != null) {
-                itemAlreadyInList.Quantity += itemQuantity;
-            }
-            else {
-                var itemPrice = _priceList.Find(p => p.ItemName == itemName);
-                if (itemPrice == null)
-                {
-                    throw new Exception($"No price for {itemName} found!");
-                }
-
-                _items.Add(new Doughnut { Name = itemName, Quantity = itemQuantity, Price = itemPrice.Price });
-            }
-        }
-
-        public void SetPricing()
-        {
-            _priceList.AddRange(new List<ItemPrice> {
-                new ItemPrice {ItemName = "DoughnutA", Price = 1.25 },
-                new ItemPrice {ItemName = "DoughnutB", Price = 4.25 },
-                new ItemPrice {ItemName = "DoughnutC", Price = 1.00 },
-                new ItemPrice {ItemName = "DoughnutD", Price = 0.75 }
-            });
-        }
-
-        public void SetRebate()
-        {
+            _items = new Dictionary<string, Doughnut>();
+            _priceList = new Dictionary<string, ItemPrice>();
             _rebateProvider = new VolumeRebateProvider();
         }
 
+        private double GetItemPrice(string itemCode)
+        {
+            if (!_priceList.ContainsKey(itemCode))
+            {
+                throw new Exception($"No price for {itemCode} found!");
+            }
+            return _priceList[itemCode].Price;
+        }
+
+        private void ApplyRebate(Doughnut item)
+        {
+            if (_rebateProvider != null)
+            {
+                item.Rebate = _rebateProvider.FindRebate(item);
+            }
+        }
+
+        public void ScanItem(string itemCode)
+        {
+            if (_items.ContainsKey(itemCode)) {
+                var itemAlreadyInList = _items[itemCode];
+                itemAlreadyInList.Quantity += 1;
+            }
+            else {
+                _items[itemCode] = new Doughnut { Code = itemCode, Quantity = 1, Price = GetItemPrice(itemCode) };
+            }
+        }
+
+        public bool IsItemExists(string itemCode)
+        {
+            return _priceList.ContainsKey(itemCode);
+        }
+
+        public void AddItemWithPrice(string itemCode, double price)
+        {
+            _priceList.Add(itemCode, new ItemPrice { ItemName = itemCode, Price = price });
+        }
+
+        public void SetPricing(Dictionary<string, double> priceList)
+        {
+            foreach (var price in priceList)
+            {
+                _priceList.Add(price.Key, new ItemPrice { ItemName = price.Key, Price = price.Value });
+            }
+        }
         public double CalculateTotal()
         {
             double total = 0;
-            foreach (var item in _items)
+            foreach (var item in _items.Values)
             {
                 var itemSum = item.Quantity * item.Price;
-
-                if (_rebateProvider != null)
+                ApplyRebate(item);
+                if (item.Rebate != null && item.Rebate.Type == RebateType.Absolute)
                 {
-                    item.Rebate = _rebateProvider.FindRebate(item);
-                    if (item.Rebate != null && item.Rebate.Type == RebateType.Absolute)
-                    {
-                        itemSum -= item.Rebate.RebateAmount;
-                    }
+                    itemSum -= item.Rebate.RebateAmount;
                 }
-
                 total += itemSum;
             }
             return total;

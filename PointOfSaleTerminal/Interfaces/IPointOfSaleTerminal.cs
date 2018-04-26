@@ -8,9 +8,8 @@ namespace PointOfSaleTerminal.Interfaces
 {
     public interface IPointOfSaleTerminal
     {
-        void SetRebate();
-        void SetPricing();
-        void ScanItem(string itemName, double itemQuantity = 1);
+        void SetPricing(Dictionary<string, double> priceList);
+        void ScanItem(string itemCode);
         double CalculateTotal();
     }
 }
